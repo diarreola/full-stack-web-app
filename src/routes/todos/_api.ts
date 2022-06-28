@@ -24,7 +24,8 @@ export const api = (params: Record<string, unknown>, request: Request, data?: Re
     case "PATCH":
       todos = todos.map(todo => {
         if (todo.uid === params.uid) {
-          todo.text = data.text as string;
+          if (data.text) todo.text = data.text as string;
+          else todo.done = data.done as boolean;
         }
         return todo;
       });
