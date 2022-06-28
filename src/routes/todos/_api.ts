@@ -1,8 +1,9 @@
+import todoItemSvelte from "$lib/todo-item.svelte";
 import type { RequestEvent } from "@sveltejs/kit"
 
 let todos: Todo[] = [];
 
-export const api = (params: Record<string, string>, request: Request, todo?: Todo) => {
+export const api = (params: Record<string, unknown>, request: Request, data?: Record<string, string>) => {
   let body = {};
   let status = 500;
 
@@ -12,12 +13,22 @@ export const api = (params: Record<string, string>, request: Request, todo?: Tod
       status = 200;
       break;
     case "POST":
-      todos.push(todo)
-      body = todo;
+      todos.push(data as Todo)
+      body = data;
       status = 201;
       break;
     case "DELETE":
       todos = todos.filter(todo => todo.uid !== params.uid)
+      status = 200;
+      break;
+    case "PATCH":
+      todos = todos.map(todo => {
+        if (todo.uid === params.uid) {
+          if (data.text) todo.text = data.text as string;
+          else todo.done = data.done as boolean;
+        }
+        return todo;
+      });
       status = 200;
       break;
     default:
