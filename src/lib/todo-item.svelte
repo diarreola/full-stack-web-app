@@ -2,7 +2,6 @@
     import { enhance } from "$lib/actions/form";
 
   export let todo: Todo;
-  const done = todo.done
 
   export let processDeletedTodoResult: ( res: Response ) => void;
   export let processUpdatedTodoResult: ( res: Response ) => void;
@@ -88,7 +87,7 @@
 
 </style>
 
-<div class="todo" class:done>
+<div class="todo" class:done={todo.done}>
   <form action="/todos/{todo.uid}.json?_method=PATCH" method="post" use:enhance={{ 
     result: processUpdatedTodoResult
   }}>
