@@ -10,7 +10,6 @@ export const post: RequestHandler = async ({ params, request }) => {
   const todoText = formData.get("text") as string
 
   return api(params, request, {
-    uid: `${Date.now()}`, //update
     created_at: new Date(),
     text: todoText,
     done: false
